@@ -46,5 +46,8 @@ $ mlst --scheme vcholerae HZ20-124.fna
 # 毒力基因扫描
 $ abricate --db vfdb *.fna > vfdb.result
 
-# 
+# 进化树构建
+$ ls *.fna | parallel -k --eta snippy --ref N16961.fasta --ctgs {} --outdir snippy/{/.}
+$ snippy-core --ref N16961.fasta snippy/*
+$ raxmlHPC-PTREADS-AVX32 -f a -x 12345 -p 12345 -m GTRGAMMA -#1000 -s core.aln
 ```
