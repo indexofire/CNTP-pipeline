@@ -55,9 +55,15 @@ $ raxmlHPC-PTREADS-AVX32 -f a -x 12345 -p 12345 -m GTRGAMMA -#1000 -s core.aln -
 
 ```R
 > library(ggtree)
-> d <- read.table("genodata.txt", header=T, check.names=F)
+> df <- read.table("genodata.txt", header=T, check.names=F)
 > t <- read.tree("RAxML_bipartitions.snps")
-> p1 <- ggtree(t, layout="circular") + geom_tiplab(align=T, offset=0.02) + geom_tippoint()
-> 
-
+> gp <- split(row.names(df), df$clade)
+# 整合clade信息到树中
+> t <- groupOTU(t, gp)
+> p1 <- ggtree(t, layout="fan", open.angle=86, aes(color=group)) + geom_tiplab(align=T, offset=0.02) + geom_tippoint() + geom_treescale(x=0,y=0,width=0.05)
+> p2 <- gheatmap(p1, df$type, width=0.2, offset=0.2, colnames_offset_y=0) + scale_fill_viridis_d(name="type")
+> library(ggnewscale)
+> p2 <- p2 + new_scale_fill()
+> p2 <- gheatmap(p2, df[8:9], width=0.2, offset=0.3, colnames_offset_y=0) + scale_fill_viridis_d(name="gene")
+> rotate_tree(p1, 88)
 ```
