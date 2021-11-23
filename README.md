@@ -49,5 +49,15 @@ $ abricate --db vfdb *.fna > vfdb.result
 # 进化树构建
 $ ls *.fna | parallel -k --eta snippy --ref N16961.fasta --ctgs {} --outdir snippy/{/.}
 $ snippy-core --ref N16961.fasta snippy/*
-$ raxmlHPC-PTREADS-AVX32 -f a -x 12345 -p 12345 -m GTRGAMMA -#1000 -s core.aln
+$ raxmlHPC-PTREADS-AVX32 -f a -x 12345 -p 12345 -m GTRGAMMA -#1000 -s core.aln -n snps
+```
+
+
+```R
+> library(ggtree)
+> d <- read.table("genodata.txt", header=T, check.names=F)
+> t <- read.tree("RAxML_bipartitions.snps")
+> p1 <- ggtree(t, layout="circular") + geom_tiplab(align=T, offset=0.02) + geom_tippoint()
+> 
+
 ```
